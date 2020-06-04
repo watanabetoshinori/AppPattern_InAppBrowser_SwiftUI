@@ -13,19 +13,23 @@ struct ContentView: View {
     @ObservedObject private var viewModel = ContentViewModel()
 
     var body: some View {
-        VStack(alignment: .center, spacing: 40) {
-            Image("URL")
-                .frame(width: 150, height: 150)
+        ZStack {
+            VStack(alignment: .center, spacing: 40) {
+                Image("URL")
+                    .frame(width: 150, height: 150)
 
-            SearchField(placeholder: "Search Web", value: self.$viewModel.searchString)
-                .padding(.horizontal, 16)
+                SearchField(placeholder: "Search Web", value: self.$viewModel.searchString)
+                    .padding(.horizontal, 16)
 
-            Spacer()
-        }
-        .padding(.top, 40)
-        .sheet(isPresented: self.$viewModel.showBrowser) {
-            NavigationView {
-                InAppBrowser(url: self.viewModel.url!)
+                Spacer()
+            }
+            .padding(.top, 40)
+
+            if self.viewModel.showBrowser {
+                NavigationView {
+                    InAppBrowser(url: self.viewModel.url!)
+                }
+                .navigationViewStyle(StackNavigationViewStyle())
             }
         }
    }
